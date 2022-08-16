@@ -33,12 +33,33 @@ export default function App() {
     setModalVisible(false);
   };
 
+  const editItemHandler = (id, item) => {
+    const editedItem = listItems.map(obj => {
+      if(obj.id === id) {
+        return {...obj, value: item};
+      }
+      return obj;
+    });
+    setListItems(editedItem);
+    setModalVisible(false);
+  };
+
+  const deleteItemHandler = (id) => {
+    const deletedItem = listItems.filter(obj => obj.id !== id);
+    setListItems(deletedItem);
+    setModalVisible(false);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.text}>ToDo List</Text>
         <TouchableOpacity onPress={openModal}>
-          <AntDesign name="pluscircle" size={30} color="#A35BDA" />
+          <AntDesign
+            name="pluscircle"
+            size={30}
+            color="#A35BDA"
+          />
         </TouchableOpacity>
       </View>
       {modalVisible && (
@@ -52,7 +73,12 @@ export default function App() {
         keyExtractor={(item, index) => item.id}
         data={listItems}
         renderItem={(itemData) => (
-          <ListItems id={itemData.item.id} text={itemData.item.value} />
+          <ListItems
+            id={itemData.item.id}
+            text={itemData.item.value}
+            editItem={editItemHandler}
+            deleteItem={deleteItemHandler}
+          />
         )}
       />
     </View>
